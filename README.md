@@ -1,47 +1,28 @@
 ![WiM](wim.png)
 
 
-# Project Title
+# Threshold Script
 
-One Paragraph of project description goes here
-
+Script outputs json file with threshold locations. Example object:
+```
+{
+    "LocationIdentifier": "94832094832",
+    "SiteName": "East Branch Brandywine Creek near Downingtown, PA",
+    "Name": "PATH",
+    "Latitude": 40.03482,
+    "Longitude": -75.70793,
+    "Elevation": 11.4,
+    "Unit": "ft",
+    "nws_id": "AAJKL"
+  }
+```
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+Python3
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-## Building and testing
-
-Explain required node version
-
-`node -v` needs to be {version}
-
-Explain how to run the debugging 'watch' script for this repo, if applicable
-
-Explain how to run unit tests, if applicable
+To run locally you can use Jupyter Notebook
 
 ## Development Workflow
 
@@ -74,14 +55,11 @@ Move onto next assigned issue and start back at step 1.
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system. **Do not include any credentials, IP addresses, or other sensitive information**
+TBD
 
 ## Built With
 
-* [Angular](https://angular.io/) - The main web framework used
-* [Clarity UI](https://vmware.github.io/clarity/) - Top-level UI framework if you have one
-* [NPM](https://www.npmjs.com/) - Dependency Management
-* [Others](https://www.npmjs.com/) - Any other high-level dependencies
+* Python
 
 ## Contributing
 
@@ -99,8 +77,7 @@ To push tags to remote origin: `git push origin --tags`
 
 ## Authors
 
-* **[Jordan Doe](PROFILE_PAGE_URL_HERE)**  - *Lead Developer* - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
-* **[Jessie Smith](PROFILE_PAGE_URL_HERE)** - *Developer* -  [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
+* **[Lauren Privette](PROFILE_PAGE_URL_HERE)**  - *Lead Developer* - [USGS Web Informatics & Mapping](https://wim.usgs.gov/)
 
 See also the list of [contributors](../../graphs/contributors) who participated in this project.
 
@@ -112,12 +89,6 @@ This project is licensed under the Creative Commons CC0 1.0 Universal License - 
 In the spirit of open source, please cite any re-use of the source code stored in this repository. Below is the suggested citation:
 
 `This project contains code produced by the Web Informatics and Mapping (WIM) team at the United States Geological Survey (USGS). As a work of the United States Government, this project is in the public domain within the United States. https://wim.usgs.gov`
-
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration Note
 
 ## About WIM
 * This project authored by the [USGS WIM team](https://wim.usgs.gov)
