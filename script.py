@@ -19,8 +19,8 @@ time_series_description_list_endpoint = 'Publish/v2/GetTimeSeriesDescriptionList
 # VARIABLES
 s3Client = boto3.client('s3', aws_access_key_id=thresholds_secrets.aws_access_key, aws_secret_access_key=thresholds_secrets.aws_secret_key)
 
-locations = ["Georgia", "Virginia", "California", "MA-RI", "Colorado", "Nebraska", "North Carolina", "Pennsylvania", "South Carolina", "Florida", "Puerto Rico", "Kentucky", "North Dakota", "Pacific Islands"]
-single = ["Virginia"]
+locations = ["Georgia", "Virginia", "California", "MA-RI", "Colorado", "Nebraska", "North Carolina", "Pennsylvania", "South Carolina", "Florida", "Puerto Rico", "Kentucky", "North Dakota", "Pacific Islands", "Arizona"]
+
 uniqueIDs = [] 
 referencePoints = []
 output = []
@@ -31,11 +31,11 @@ nws_usgs_crosswalk = []
 def delete_bucket_contents():
     s3Resource = boto3.resource('s3', aws_access_key_id=thresholds_secrets.aws_access_key, aws_secret_access_key=thresholds_secrets.aws_secret_key)
     obj = s3Resource.Object('thresholds.wim.usgs.gov','output.json').delete()
-
+ 
 # uploads file to aws
 def upload_to_aws(local_file, bucket, s3_file):
     try:
-        s3Client.upload_file(local_file, bucket, s3_file)
+        s3Client.upload_file(local_file, bucket, s3_file, ExtraArgs={'ContentType': 'application/json'})
         print("Upload Successful")
         return True
     except FileNotFoundError:
@@ -64,9 +64,8 @@ def build_output_json():
         nws_usgs_crosswalk.append(obj)
 
     # Getting each state's surface water locations
-    for state in single:
+    for state in locations:
         r = requests.get(AQUARIUS_URL + 'Publish/v2/GetLocationDescriptionList?LocationFolder=All%20Locations.' + state + '.SW', auth=(thresholds_secrets.aq_username, thresholds_secrets.aq_password), timeout=10)
-
         # loading response into json
         data = json.loads(r.text);
 
@@ -85,9 +84,8 @@ def build_output_json():
         rpCandidate = []
         combinedIdentCand = {}
         # getting RPs
-        getRPs = requests.get(AQUARIUS_URL + location_data_endpoint + identifier , auth=(thresholds_secrets.aq_username, thresholds_secrets.aq_password), timeout=10)
+        getRPs = requests.get(AQUARIUS_URL + location_data_endpoint + identifier , auth=(thresholds_secrets.aq_username, thresholds_secrets.aq_password))
         rpResult = getRPs.json()
-
         lng = len(rpResult['ReferencePoints'])
         # if location has refrence points go and get the thresholds
         if lng > 0:
@@ -113,7 +111,12 @@ def build_output_json():
                     for id in nws_usgs_crosswalk:
                         if id['usgs_id'] == identifier:
                             nwsId = id['nws_id']
-                    buildObject = ({'LocationIdentifier': x['LocationIdentifier'], 'SiteName': rpResult['LocationName'], 'Name': rp['Name'], 'Latitude': rp['Latitude'], 'Longitude': rp['Longitude'], 'Elevation': rp['ReferencePointPeriods'][0]['Elevation'], 'Unit': rp['ReferencePointPeriods'][0]['Unit'], 'nws_id': nwsId})
+                            
+                    try:
+                        buildObject = ({'LocationIdentifier': x['LocationIdentifier'], 'SiteName': rpResult['LocationName'], 'Name': rp['Name'], 'Latitude': rp['Latitude'], 'Longitude': rp['Longitude'], 'Elevation': rp['ReferencePointPeriods'][0]['Elevation'], 'Unit': rp['ReferencePointPeriods'][0]['Unit'], 'nws_id': nwsId})
+                    except:
+                        print("An exception occurred", rp)
+                    
                     rpCandidate.append(buildObject)
                 if len(thresholds) != 0:
                     output.append(rpCandidate[0])
@@ -123,11 +126,11 @@ def build_output_json():
     with open('data.json', 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=4)
         
+    # delete old files in s3
+    delete_bucket_contents()
+        
     # uploading to s3
     uploaded = upload_to_aws('data.json', 'thresholds.wim.usgs.gov', 'output.json')
-    
-# delete old files in s3
-delete_bucket_contents()
 
 # building the json object and then deploying to s3 bucket
 build_output_json()
