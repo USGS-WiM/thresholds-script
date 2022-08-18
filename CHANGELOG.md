@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Arizona state folder to get their Reference Points
+- Minnesota
+- Wisconsin
 
 ### Changed
 

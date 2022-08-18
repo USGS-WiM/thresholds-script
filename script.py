@@ -19,7 +19,7 @@ time_series_description_list_endpoint = 'Publish/v2/GetTimeSeriesDescriptionList
 # VARIABLES
 s3Client = boto3.client('s3', aws_access_key_id=thresholds_secrets.aws_access_key, aws_secret_access_key=thresholds_secrets.aws_secret_key)
 
-locations = ["Georgia", "Virginia", "California", "MA-RI", "Colorado", "Nebraska", "North Carolina", "Pennsylvania", "South Carolina", "Florida", "Puerto Rico", "Kentucky", "North Dakota", "Pacific Islands", "Arizona", "Minnesota"]
+locations = ["Georgia", "Virginia", "California", "MA-RI", "Colorado", "Nebraska", "North Carolina", "Pennsylvania", "South Carolina", "Florida", "Puerto Rico", "Kentucky", "North Dakota", "Pacific Islands", "Arizona", "Minnesota", "Wisconsin"]
 
 uniqueIDs = [] 
 referencePoints = []
@@ -86,7 +86,10 @@ def build_output_json():
         # getting RPs
         getRPs = requests.get(AQUARIUS_URL + location_data_endpoint + identifier , auth=(thresholds_secrets.aq_username, thresholds_secrets.aq_password))
         rpResult = getRPs.json()
-        lng = len(rpResult['ReferencePoints'])
+        try: 
+            lng = len(rpResult['ReferencePoints'])
+        except:
+            print("An exception occurred", rpResult)
         # if location has refrence points go and get the thresholds
         if lng > 0:
             # for each reference point need to get the associated thresholds
