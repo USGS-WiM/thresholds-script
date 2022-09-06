@@ -100,13 +100,13 @@ def build_output_json():
                 items = thresholdResult['TimeSeriesDescriptions']
                 # for each description entry there is a thresholds array
                 for x in items:
-                    length = len(x['Thresholds'])
-                    if length > 0:
+                    #length = len(x['Thresholds'])
+                    #if length > 0:
                         # if the parameter is gage height, add it to the thresholds
-                        if x['Parameter'] == "Gage height":
+                        #if x['Parameter'] == "Gage height":
                             # Checking Publish to make sure this site is complete
-                            if x['Publish'] == True:
-                                thresholds.append(x)
+                    if x['Publish'] == True:
+                        thresholds.append(x)
                 candlng = len(thresholds)
                 if candlng > 0:
                     # checking if it has an nws id
