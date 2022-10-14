@@ -19,7 +19,7 @@ time_series_description_list_endpoint = 'Publish/v2/GetTimeSeriesDescriptionList
 # VARIABLES
 s3Client = boto3.client('s3', aws_access_key_id=thresholds_secrets.aws_access_key, aws_secret_access_key=thresholds_secrets.aws_secret_key)
 
-locations = ["Georgia", "Virginia", "California", "MA-RI", "Colorado", "Nebraska", "North Carolina", "Pennsylvania", "South Carolina", "Florida", "Puerto Rico", "Kentucky", "North Dakota", "Pacific Islands", "Arizona", "Minnesota", "Wisconsin"]
+locations = ["Georgia", "Virginia", "California", "MA-RI", "Colorado", "Nebraska", "North Carolina", "Pennsylvania", "South Carolina", "Florida", "Puerto Rico", "Kentucky", "North Dakota", "Pacific Islands", "Arizona", "Minnesota", "Wisconsin", "Texas", "Michigan", "Oklahoma"]
 
 uniqueIDs = [] 
 referencePoints = []
